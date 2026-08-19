@@ -1,11 +1,13 @@
 import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { ProjectController } from '../controllers/ProjectController'
+import { TaskController } from '../controllers/TaskController'
 import { handleInputErrors } from '../middleware/validation'
+import { validateProjectExists } from '../middleware/project'
 
 const router = Router()
 
-
+/** Routes for project */
 router.post('/',
 
     body('projectName')
@@ -58,4 +60,19 @@ router.delete('/:id',
 
 )
 
+/** Routes for tasks*/
+
+router.post('/:projectId/tasks',
+    validateProjectExists,
+    body('name')
+        .notEmpty().withMessage('El nombre de la tarea es Obligatoria'),
+    body('description')
+        .notEmpty().withMessage('La descripcion de la tarea es Obligatoria'),
+    handleInputErrors, //si pasa esto entonces se va a crear
+    TaskController.createTask) //esta va a hacer la url de project y cuando presionas ahi con la url de project se agrega ID/tasks
+
+
+    router.get('/:projectId/tasks',
+        validateProjectExists,
+        TaskController.getProjectTasks)
 export default router

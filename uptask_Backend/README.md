@@ -93,3 +93,20 @@ Router(endpoint) --> Controlador --> Modelo --> Controlador --> Vista --> Se mue
 Las inyecciones SQL y todo eso se encarga el ORM
 
 Un ObjectId es un tipo de datos que sirve para crear ID 
+
+Nested Resource Routing (Forma en la que estructuramos las rutass)
+
+
+El "Nested Resource Routing" o "Enrutamiento de Recursos, este es para API's en el especial para APIs RESTful
+Anidados" es un patrón de diseño en la construcción de URLs para APls, especialmente en APls RESTful, donde las relaciones jerárquicas entre recursos son expresadas en la estructura de la URL. Este patrón es muy común en aplicaciones web y móviles que manejan datos relacionados en forma de recursos.
+
+Las ventajas es que 
+
+por ejemplo /projects/:projectId/tasks 
+nos ayuda con la seguridad y aparte como se pasa el id vamos a saber si el proyecto existe, si el usuario tiene permisos, crear tareas en ese proyecto, podemos obtenerlas, eliminarlas en caso de que el usuario tenga permisos y al ser asi tenemos menos validaciones en nuestro codigo.
+Nos queda un codigo reutilizable y mas ordenado
+
+En Express se implementa por medio de middleware 
+
+Un middleware nos permite darle un mejor orden a nuestras rutas para aplicar este patron de diseño para las URL's 
+Debido a que se ejecutan en las peticiones HTTP y antes del controlador, los hacen un gran lugar para poder ejecutar ciertas acciones referentes a si los proyectos existen o si el usuario tiene permisos para acceder a él
