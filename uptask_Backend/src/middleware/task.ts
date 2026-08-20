@@ -1,28 +1,28 @@
 //Este Middleware lo que hace es verificar que exista el proyecto
 
 import type {Request, Response, NextFunction} from 'express'
-import Project, { IProject } from '../models/Project'
+import Task, { ITask } from '../models/Task'
 
 //con esto De manera global le agregamos el atributo project a Request y de esta manera podemos usarlo en todoos lso controladores
 declare global {
     namespace Express{
         interface Request{
-            project: IProject //esto lo que hace es agregarle al Request un atributo nuevo y se le debe indicar a que type pertenece
+            task: ITask //esto lo que hace es agregarle al Request un atributo nuevo y se le debe indicar a que type pertenece
         }
     }
 }
-export async function projectExists(req:Request, res:Response, next: NextFunction) {
+export async function taskExists(req:Request, res:Response, next: NextFunction) {
     
 
     try {
-        const { projectId } = req.params
-        const project = await Project.findById(projectId)
+        const { taskId } = req.params
+        const task = await Task.findById(taskId)
 
-        if (!project) {
-            const error = new Error('Proyecto No encontrado')
+        if (!task) {
+            const error = new Error('Tarea No encontrada')
             return res.status(400).json({ error: error.message })
         } //revisa si el proyecto existe
-        req.project = project
+        req.task = task
         next()
     } catch (error) {
         res.status(500).json({error: 'Hubo un error'})
