@@ -49,7 +49,7 @@ export class ProjectController { //este se va a mandar a llamar desde router
 
         const { id } = req.params
         try {
-            const project = await Project.findByIdAndUpdate(id, req.body) //toma dos parametros uno el id, y tambien lo que enviamos por formulario
+            const project = await Project.findById(id) //toma dos parametros uno el id, y tambien lo que enviamos por formulario
 
 
             if (!project) {
@@ -58,6 +58,9 @@ export class ProjectController { //este se va a mandar a llamar desde router
             }
 
 
+            project.clientName = req.body.clientName
+            project.clientName = req.body.clientName
+            project.description = req.body.description
             await project.save()
             res.send('Proyecto Actualizado')
 

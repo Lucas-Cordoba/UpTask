@@ -5,7 +5,7 @@ const taskStatus = {
     ON_HOLD: 'onHold',
     IN_PROGRESS: 'inProgress',
     UNDER_REVIEW: 'underReview',
-    COMPLETED: 'completes'
+    COMPLETED: 'completed'
 } as const //este es un objeto con los estados de las tareas
 
 export type TaskStatus = typeof taskStatus[keyof typeof taskStatus]
