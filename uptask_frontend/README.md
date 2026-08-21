@@ -1,0 +1,36 @@
+npm i -D tailwindcss@3 postcss autoprefixer
+Instala tres paquetes como dependencias de desarrollo (-D):
+
+tailwindcss@3: El framework de CSS basado en clases de utilidad para diseñar rápido sin salir del HTML/JSX.
+
+postcss: La herramienta que procesa y transforma el CSS (Tailwind funciona como un plugin de PostCSS).
+
+autoprefixer: Un plugin de PostCSS que añade automáticamente los prefijos de los navegadores
+
+
+npx tailwindcss init -p
+
+Ejecuta el inicializador de Tailwind para generar los archivos de configuración iniciales:
+
+-p: Le indica a Tailwind que cree dos archivos automáticamente:
+
+tailwind.config.js: Donde defines qué archivos debe escanear Tailwind (propiedad content), temas personalizados, colores, fuentes, etc.
+
+postcss.config.js: Configura PostCSS para que reconozca e integre los plugins de tailwindcss y autoprefixer.
+
+
+
+En este proyecto usamos React Rotuer para el routing, React Query para las consultas y las mutaciones. React Form para los formularios
+
+BrowserRouter: componente contenedor principal que envuelve toda tu aplicación
+Routes: Funciona como un contenedor que evalúa todas las rutas definidas en su interior. 
+Route:Define una ruta específica mapeando una URL con un componente.
+
+npm i -D @types/node soporte para que funcione correctamente
+
+
+
+headlessui.com
+librería de componentes de interfaz de usuario (UI) sin estilos predefinidos (unstyle), creada por el mismo equipo detrás de Tailwind CSS.
+
+tailwindui.com es costosa pero para multiples proyectos, o un prroyecto como servicio tiene muchos ejemplos y solo se copia y pegas y ahorra mucho tiempo
