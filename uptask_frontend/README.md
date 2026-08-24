@@ -49,6 +49,8 @@ Mutations(modificar): Se utilizan para crear/actualizar/eliminar datos en el ser
 
 https://tanstack.com  esta es la pagina de la doc
 
+Query: tiene queryKey un atributo que es un identificador unico y con ese key sabemos como cachear los resultados de las consultas para reutilizarlas y no hacer tantos llamados hacia la API
+y queryFn es lo mismo que mutationFn solamente es la funcion que se encarga de realizar el query
 
 Toast Container
 <ToastContainer

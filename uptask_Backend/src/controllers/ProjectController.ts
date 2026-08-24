@@ -7,11 +7,6 @@ export class ProjectController { //este se va a mandar a llamar desde router
 
     static createProject = async (req: Request, res: Response) => {
 
-        if (true) {
-            const error = new Error('Proyecto No encontrado')
-            return res.status(400).json({ error: error.message })
-        }
-
 
         const project = new Project(req.body) //con esto lo instanciamos
 

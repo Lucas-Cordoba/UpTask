@@ -8,6 +8,14 @@ export const projectSchema = z.object({
     description: z.string()
 })
 
+export const dashboardProjectSchema = z.array(
+    projectSchema.pick({
+        _id:true,
+        projectName:true,
+        clientName:true,
+        description:true
+    }) //es el mismo que el Schema anterior pero ahora lo queremos como arreglo y no es un type lo queremos como shema para validar que la respuesta que obtenemos es la correcta 
+)
 export type Project = z.infer< typeof projectSchema>
 export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'>
 
