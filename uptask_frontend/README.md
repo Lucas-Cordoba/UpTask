@@ -34,3 +34,46 @@ headlessui.com
 librería de componentes de interfaz de usuario (UI) sin estilos predefinidos (unstyle), creada por el mismo equipo detrás de Tailwind CSS.
 
 tailwindui.com es costosa pero para multiples proyectos, o un prroyecto como servicio tiene muchos ejemplos y solo se copia y pegas y ahorra mucho tiempo
+
+
+React Query o TanStack Query(hay varias herramientas pero en react se llama React Query)
+-Es una libreria para obtener datos del servidor
+-Sus ventajas principales es que obtiene los datos de forma optimizada y rápida, ademas cachea las consultas, sincroniza/actualiza los datos del servidor de forma muy simple
+-Se puede utilizar con fetch API o Axios
+Toastify en la pagina se puede cambiar los atributos
+
+Conceptos nuevos tiene muchos pero estos son los dos mas importantes
+
+Queries(obtener): Se utilizar para obtener datos de un servidor o una API(GET)
+Mutations(modificar): Se utilizan para crear/actualizar/eliminar datos en el servidor(POST,PUT,PATCH,DELETE)
+
+https://tanstack.com  esta es la pagina de la doc
+
+
+Toast Container
+<ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+transition={Bounce}
+/>
+
+Toast Emitter
+toast('🦄 Wow so easy!', {
+position: "top-right",
+autoClose: 5000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
+transition: Bounce,
+});

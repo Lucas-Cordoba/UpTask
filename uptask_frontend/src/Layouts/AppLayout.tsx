@@ -1,4 +1,6 @@
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 import Logo from "@/components/Logo";
 import NavMenu from "@/components/NavMenu";
 export default function AppLayout() {
@@ -32,6 +34,11 @@ export default function AppLayout() {
                 </p>
 
             </footer>
+
+                <ToastContainer //lo ponemos aca porque va a estar en varias vistas
+                pauseOnHover={false}
+                pauseOnFocusLoss={false} //esto es para que cunado me posiciones arriba de la notificacion no se frene
+            />
         </>
     )
 }
