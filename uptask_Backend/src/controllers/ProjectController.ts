@@ -58,7 +58,7 @@ export class ProjectController { //este se va a mandar a llamar desde router
             }
 
 
-            project.clientName = req.body.clientName
+            project.projectName = req.body.projectName
             project.clientName = req.body.clientName
             project.description = req.body.description
             await project.save()

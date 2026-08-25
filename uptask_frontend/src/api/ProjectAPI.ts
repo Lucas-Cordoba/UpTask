@@ -1,4 +1,4 @@
-import { dashboardProjectSchema, type ProjectFormData } from "@/types";
+import { dashboardProjectSchema, type ProjectFormData, type Project } from "@/types";
 import api from "@/lib/axios";
 import { isAxiosError } from "axios";
 
@@ -24,6 +24,50 @@ export async function getProjects() {
         if(response.success){ //si el response.success es true que seria que esta bien lo que obtuvimos, se retorna el data
             return response.data
         }
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery
+            //lanzamos un error que va a ser la respuesta que tenemos de nuestra api
+        }
+    }
+    
+}
+
+type ProjectAPIType = {
+    formData: ProjectFormData,
+    projectId: Project['_id']
+}
+export async function getProjectById(id: Project['_id']) {
+    try {
+        const {data} = await api(`/projects/${id}`) //no ponemos .get porque axios ya tiene por default que se haga un get
+        return data
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery
+            //lanzamos un error que va a ser la respuesta que tenemos de nuestra api
+        }
+    }
+    
+}
+
+export async function updateProject({formData, projectId} : ProjectAPIType) {
+    try {
+        const {data} = await api.put<string>(`/projects/${projectId}`, formData) //El put pasa la ruta y el nuevo objeto
+        return data
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery
+            //lanzamos un error que va a ser la respuesta que tenemos de nuestra api
+        }
+    }
+    
+}
+
+export async function deleteProject(id: Project['_id']) {
+    try {
+        const url = `/projects/${id}`
+        const {data} = await api.delete<string>(url) //no ponemos .get porque axios ya tiene por default que se haga un get
+        return data
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery

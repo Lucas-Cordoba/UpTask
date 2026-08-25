@@ -79,3 +79,16 @@ progress: undefined,
 theme: "light",
 transition: Bounce,
 });
+
+instalamos ReactQueryDevtools
+herramienta visual de depuración (debugging) para el frontend.
+
+Propósito: Te muestra un panel flotante en el navegador para inspeccionar en tiempo real el estado de todas tus consultas (queries) de TanStack Query: sus claves (queryKey), si están cargando (loading), si están en caché (stale o fresh), los errores y cuántos reintentos han hecho.
+
+ y morgan 
+ 
+ s un middleware de registro de peticiones HTTP (logger) para el backend (Express / Node.js).
+
+Propósito: Imprime en la consola de la terminal las peticiones que llegan al servidor (ej. GET /api/projects 200 12.34 ms). Te permite ver qué rutas se están llamando, qué método HTTP usaron, la respuesta del servidor y cuánto tardó en responder.
+
+Es para no hacer consultas innecesarias
