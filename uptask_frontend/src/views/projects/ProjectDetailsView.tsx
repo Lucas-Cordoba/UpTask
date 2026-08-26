@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query"
 import { getProjectById } from "@/api/ProjectAPI"
 import { Navigate } from "react-router-dom"
 import AddTaskModal from "@/components/tasks/AddTaskModal"
-
+import TaskList from "@/components/tasks/TaskList"
+import EditTaskData from "@/components/tasks/EditTaskData"
 export default function ProjectDetailsView() {
 
     const navigate = useNavigate()
@@ -38,14 +39,18 @@ export default function ProjectDetailsView() {
                 type="button"
                 className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl 
                 font-bold cursor-pointer transition-colors"
-                onClick={() => navigate('?newTask=true')} //Esa línea abre una ventana modal (o activa una vista condicional) agregando un parámetro a la URL mediante search params (parámetros de consulta).
+                onClick={() => navigate( location.pathname + '?newTask=true')} //Esa línea abre una ventana modal (o activa una vista condicional) agregando un parámetro a la URL mediante search params (parámetros de consulta).
                >
                     Agregar Tarea
                 </button>
 
             </nav>
 
+            <TaskList
+                tasks={data.tasks}
+            />
             <AddTaskModal/>
+            <EditTaskData/> 
         </>
     )
 }

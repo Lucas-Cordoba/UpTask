@@ -92,3 +92,11 @@ Propósito: Te muestra un panel flotante en el navegador para inspeccionar en ti
 Propósito: Imprime en la consola de la terminal las peticiones que llegan al servidor (ej. GET /api/projects 200 12.34 ms). Te permite ver qué rutas se están llamando, qué método HTTP usaron, la respuesta del servidor y cuánto tardó en responder.
 
 Es para no hacer consultas innecesarias
+
+location (useLocation)
+
+¿Qué es? Representa la URL actual completa y el estado de la navegación.
+
+params (useParams)
+
+¿Qué son? Son los parámetros dinámicos definidos explícitamente dentro del patrón de la ruta (definidos con dos puntos :).
