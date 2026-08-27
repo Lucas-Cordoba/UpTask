@@ -24,7 +24,7 @@ export default function TaskCard({ task }: TaskCardProps) {
             toast.error(error.message)
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
+            queryClient.invalidateQueries({ queryKey: ['editProject', projectId] })
             toast.success(data)
         }
     })
@@ -51,7 +51,11 @@ export default function TaskCard({ task }: TaskCardProps) {
                         <Menu.Items
                             className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                             <Menu.Item>
-                                <button type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                <button 
+                                type='button' 
+                                className='block px-3 py-1 text-sm leading-6 text-gray-900'
+                                onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
+                                >
                                     Ver Tarea
                                 </button>
                             </Menu.Item>

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "dev:api": "tsx watch src/index.ts --api",
+    "comment": "el dev api es que podemos ejecutar ese comando y va a tener la bandera --api y este argumento lo podemos leer y entonces ssabemos que estamos escribiendo codigo mientras desarrollamos una API"
   },
   "keywords": [],
   "author": "",

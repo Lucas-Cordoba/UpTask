@@ -1,11 +1,12 @@
 import { isAxiosError } from "axios";
 import api from "@/lib/axios";
-import type { Project, Task, TaskFormData } from "@/types";
+import {  taskSchema, type Project, type Task, type TaskFormData } from "@/types";
 
 type TaskAPI = {
     formData: TaskFormData,
     projectId: Project['_id']
     taskId: Task['_id']
+    status: Task['status']
 }
 export async function createTask({formData, projectId}: Pick<TaskAPI, 'formData' | 'projectId'>) {
     try {
@@ -24,7 +25,10 @@ export async function getTaskById({projectId,taskId} : Pick<TaskAPI, 'projectId'
     try {
         const url= `/projects/${projectId}/tasks/${taskId}`
         const {data} = await api(url) //no ponemos .get porque axios ya tiene por default que se haga un get
-        return data
+        const response = taskSchema.safeParse(data)
+        if(response.success){
+            return response.data
+        }
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery
@@ -53,6 +57,20 @@ export async function deleteTask({projectId,taskId} : Pick<TaskAPI, 'projectId' 
     try {
         const url= `/projects/${projectId}/tasks/${taskId}`
         const {data} = await api.delete<string>(url) //no ponemos .get porque axios ya tiene por default que se haga un get
+        return data
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery
+            //lanzamos un error que va a ser la respuesta que tenemos de nuestra api
+        }
+    }
+    
+}
+
+export async function updateStatus({projectId,taskId,status} : Pick<TaskAPI, 'projectId' | 'taskId' | 'status'>) { //Con Pick ya obtenemos la forma muy limpia de estructurar y reutilizar tipos en TypeScript.
+    try {
+        const url= `/projects/${projectId}/tasks/${taskId}/status`
+        const {data} = await api.post<string>(url, {status}) //no ponemos .get porque axios ya tiene por default que se haga un get
         return data
     } catch (error) {
         if(isAxiosError(error) && error.response){

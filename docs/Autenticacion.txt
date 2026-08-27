@@ -1,0 +1,14 @@
+Autenticacion y Crear Cuentas
+
+Creando un sistema de Autenticacion robusto
+
+-- Hoy en día no hay solo sitio web que sea utilizado por miles de usuarios que no tenga autenticación y registro de usuarios.
+-- Sitios de bancos, tiendas virtuales, aplicaciones de celular, todos tienen algún sistema de autenticación integrado.
+-- La autenticación nos permitirá identificar a nuestros usuarios y darles ciertos accesos a su información.
+
+
+Principios de autenticacion hay diferentes formas de autenticar a un usuario
+
+-- Un Usuario se puede autenticar con algo que el recuerda (Email y Password)
+-- Un Usuario se puede autenticar con un dispositivo físico (Mensaje SMS o alerta)
+-- Un Usuario se puede autenticar con algo físico (Huella Digital, Voz o Cara

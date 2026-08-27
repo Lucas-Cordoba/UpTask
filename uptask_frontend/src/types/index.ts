@@ -5,16 +5,19 @@ import { z } from 'zod'
 export const taskStatusSchema = z.enum([
     "pending","onHold", "inProgress", "underReview"
 ])
+export type TaskStatus = z.infer<typeof taskStatusSchema>
 
-export const TaskSchema = z.object({
+export const taskSchema = z.object({
     _id: z.string(), //es un ObjectId pero en el json viene plano
     name: z.string(),
     description: z.string(),
     project: z.string(),
-    status: taskStatusSchema
+    status: taskStatusSchema,
+    createdAt:z.string(),
+    updatedAt:z.string()
 })
 
-export type Task = z.infer<typeof TaskSchema>
+export type Task = z.infer<typeof taskSchema>
 export type TaskFormData = Pick<Task, 'name' | 'description'> //Lo que necesitamos para el formulario
 /** Projects */
 export const projectSchema = z.object({

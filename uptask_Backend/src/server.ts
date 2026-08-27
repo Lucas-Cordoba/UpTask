@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import { corsConfig } from "./config/cors";
 import { connectDB } from "./config/db";
 import projectRoutes from './routes/projectRoutes'
+import authRouter from './routes/authRoutes'
 
 dotenv.config() //sirve para cargar las variables de entorno definidas en tu archivo .env dentro del objeto global process.env de Node.js
 connectDB()
@@ -17,5 +18,6 @@ app.use(morgan('dev'))
 //Leer datos de formularios
 app.use(express.json())
 //Routes
+app.use('/api/auth', authRouter)
 app.use('/api/projects', projectRoutes)
 export default app
