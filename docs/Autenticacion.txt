@@ -12,3 +12,34 @@ Principios de autenticacion hay diferentes formas de autenticar a un usuario
 -- Un Usuario se puede autenticar con algo que el recuerda (Email y Password)
 -- Un Usuario se puede autenticar con un dispositivo físico (Mensaje SMS o alerta)
 -- Un Usuario se puede autenticar con algo físico (Huella Digital, Voz o Cara
+
+Algoritmo para crear Cuentas
+
+-- Usuarios deberan ser unicos, usualmente para crear una cuenta se pide el e-mail del usuario. No puede haber e-mail duplicados
+-- Los Password deben ser hasheados para no ponerlos en la base de datos
+-- Una buena forma de evitar llenarte de usuarios es enviar un enlace de verificacion al e-mail y entonces el usuario debera realizar algina accion(como tarjeta de credito o numero de celular)
+-- Una vez creada la cuenta y que se confirma puede usar la app
+
+npm i bcrypt
+
+Es una librería que sirve para encriptar (hashear) contraseñas de forma segura antes de guardarlas en la base de datos
+npm i bcrypt -D @types/bcrypt este es para tener soporte de typescript
+En proyectos con TypeScript, los paquetes escritos originalmente en JavaScript no incluyen las definiciones de tipos por defecto.
+
+npm i bcrypt -D @types/bcrypt este es para tener soporte de typescript
+Exacto. En proyectos con TypeScript, los paquetes escritos originalmente en JavaScript no incluyen las definiciones de tipos por defecto
+npm i bcrypt -D @types/bcrypt este es para tener soporte de typescript
+Exacto. En proyectos con TypeScript, los paquetes escritos originalmente en JavaScript no incluyen las definiciones de tipos por defecto
+VERIFICAR QUE LAS DEPENDENCIAS SIGAN TENIENDO MANTENIMIENTO
+
+//Para enivar email de tokens
+
+Se usa MailTrap para hacer testeos
+
+Se usa resend para envios de email en produccion
+
+ALGORITMO PARA INICIAR SESION
+
+La primera comprobacion que debemos hacer es saber si el usuario existe o no
+La segunda es comprobar si su cuenta fue confirmada
+La ultima comprobacion es revisar si el password es correcto, en caso de que si lo sea el usuario se autentica
