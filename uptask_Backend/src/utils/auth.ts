@@ -10,5 +10,5 @@ export const hashPassword = async (password: string) => {
 
 export const checkPassword = async (enteredPassword: string, storedHash: string) => {
 
-    return await bcrypt.compare(enteredPassword, enteredPassword)//compara los datos ingresados en un formulario plano contra una cadena hasheada 
+    return await bcrypt.compare(enteredPassword, storedHash)//compara los datos ingresados en un formulario plano contra una cadena hasheada 
 }

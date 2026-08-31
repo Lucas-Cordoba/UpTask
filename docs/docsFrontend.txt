@@ -100,3 +100,6 @@ location (useLocation)
 params (useParams)
 
 ¿Qué son? Son los parámetros dinámicos definidos explícitamente dentro del patrón de la ruta (definidos con dos puntos :).
+
+Input Token
+npm i @chacra-ui/pin-input  //es para la interfaz de usuario del ingreso del token de confirmacion

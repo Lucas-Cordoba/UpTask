@@ -14,7 +14,7 @@ export class AuthController {
 
 
 
-            const { password, email } = req.body
+            const { password, email, name } = req.body
             //Prevenir duplicados
             const userExists = await User.findOne({ email }) //realiza una búsqueda en la base de datos de MongoDB (a través de Mongoose) para comprobar si ya existe un registro guardado con ese correo electrónico.
             if (userExists) {
@@ -121,4 +121,47 @@ export class AuthController {
 
     }
 
+
+
+
+        static requestConfirmationCode = async (req: Request, res: Response) => {
+        try {
+
+
+
+
+            const { email } = req.body
+            //Usuario existe 
+            const user = await User.findOne({ email }) //realiza una búsqueda en la base de datos de MongoDB (a través de Mongoose) para comprobar si ya existe un registro guardado con ese correo electrónico.
+            if (!user) {
+                const error = new Error('El Usuario no esta registrado')
+                return res.status(404).json({ error: error.message })
+            }
+
+            if(user.confirmed){
+                const error = new Error('El Usuario ya esta confirmado')
+                return res.status(403).json({ error: error.message })
+            
+            }
+
+            //Generar el token
+            const token = new Token()
+            token.token = generateToken()
+            token.user = user._id
+
+            //Enviar el email de confirmacion
+            AuthEmail.sendConfirmationEmail({
+                email: user.email, //le pasamos el email por parametro
+                name: user.name,
+                token: token.token
+            })
+            await Promise.allSettled([user.save(), token.save()])
+            res.send('Se envio un nuevo token a tu e-mail') //respuesta al usuario 
+
+
+
+        } catch (error) {
+            res.status(500).json({ error: 'Hubo un error' })
+        }
+    }
 }
