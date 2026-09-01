@@ -43,3 +43,9 @@ ALGORITMO PARA INICIAR SESION
 La primera comprobacion que debemos hacer es saber si el usuario existe o no
 La segunda es comprobar si su cuenta fue confirmada
 La ultima comprobacion es revisar si el password es correcto, en caso de que si lo sea el usuario se autentica
+
+Algoritmo para restablecer un password
+
+-Primer comprobacion es saber si el usuario existe
+-Si el usuario existe se le envia el token 
+- El token se envia por mail y el usuario debera visitar un enlace e ingresar ese token, si el token es valido le permitimos restablecer su password
