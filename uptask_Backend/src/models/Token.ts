@@ -16,7 +16,7 @@ const tokenSchema: Schema = new Schema({
         type: Types.ObjectId,
         ref: 'User'
     },
-    createdAt: {
+    expiresAt: {
         type: Date,
         default: Date.now(),
         expires: "10m" //Un proceso en segundo plano de MongoDB revisa periódicamente la base de datos y borra automáticamente el documento cuando transcurre el tiempo especificado

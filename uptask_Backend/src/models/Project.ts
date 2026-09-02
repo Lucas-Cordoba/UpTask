@@ -1,5 +1,6 @@
 import mongoose, {Schema, Document, PopulatedDoc, Types} from "mongoose"; //PopulateDoc es una forma de traernos la referencia en este caso de la tarea
 import { ITask } from "./Task";
+import { IUser } from "./Auth";
 
 export interface IProject extends Document //se pone Type para que no haya dos variables llamadas iguales
 {
@@ -7,6 +8,8 @@ export interface IProject extends Document //se pone Type para que no haya dos v
     clientName: string,
     description: string,
     tasks: PopulatedDoc<ITask & Document>[] //Se pone [] porque va a haber multiples tareas
+    manager: PopulatedDoc<IUser & Document> //Se pone manager que va a traer la referencia del usuario, y se pone PopulatedDoc para que nos traiga la referencia del usuario
+    //a manager no se le pone [] porque solo va a haber un usuario en cambio a tasks si se le 
 } //este es el esquema de TypeScript
 
 const ProjectSchema: Schema = new Schema ({
@@ -32,7 +35,12 @@ const ProjectSchema: Schema = new Schema ({
             type: Types.ObjectId,
             ref: 'Task'
         }
-    ]
+    ],
+    manager: {
+             type: Types.ObjectId,
+            ref: 'User'
+        } //referencia de usuario
+    
 },{timestamps: true}) //este ,{timestamps: true} almacena cuando se creo el registro y cuando lo actualizamos
 
 

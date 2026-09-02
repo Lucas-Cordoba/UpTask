@@ -2,9 +2,8 @@ import { Response, Request } from "express"
 import { checkPassword, hashPassword } from '../utils/auth'
 import User from "../models/Auth"
 import Token from "../models/Token"
-import { generateToken } from "../utils/token"
+import { generateJWT } from "../utils/jwt"
 import { AuthEmail } from "../emails/AuthEmail"
-import { check } from "express-validator"
 
 
 export class AuthController {
@@ -30,7 +29,7 @@ export class AuthController {
 
             //Generar el token
             const token = new Token()
-            token.token = generateToken()
+            token.token = generateJWT({id: user._id})
             token.user = user._id
 
             //Enviar el email de confirmacion
@@ -90,7 +89,7 @@ export class AuthController {
                 //Se genera un nuevo token
                 const token = new Token()
                 token.user = user._id
-                token.token = generateToken()
+                token.token = generateJWT({id: user._id})
                 await token.save()
 
                 //Se envia el email
@@ -113,7 +112,9 @@ export class AuthController {
                 return res.status(401).json({ error: error.message })
             }
 
-            res.send('Autenticando...') //lo vamos a autenticar en produccion
+            const token = generateJWT({id: user._id}) //se genera el token con el id del usuario
+
+            res.send(token) //lo vamos a autenticar en produccion
         } catch {
             res.status(500).json({ error: 'Hubo un error' })
         }
@@ -146,7 +147,7 @@ export class AuthController {
 
             //Generar el token
             const token = new Token()
-            token.token = generateToken()
+            token.token = generateJWT({id: user._id})
             token.user = user._id
 
             //Enviar el email de confirmacion
@@ -183,7 +184,7 @@ export class AuthController {
 
             //Generar el token
             const token = new Token()
-            token.token = generateToken()
+            token.token = generateJWT({id: user._id})
             token.user = user._id
             await token.save()
 

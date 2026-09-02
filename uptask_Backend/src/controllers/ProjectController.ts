@@ -10,6 +10,8 @@ export class ProjectController { //este se va a mandar a llamar desde router
 
         const project = new Project(req.body) //con esto lo instanciamos
 
+        // Asigna un manager
+        project.manager = req.user?._id //esto es para que el manager sea el usuario que esta logueado, y se le asigna el id del usuario que esta logueado, y se le asigna al proyecto que se esta creando
         try {
 
             await project.save()

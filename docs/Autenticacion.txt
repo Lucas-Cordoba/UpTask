@@ -49,3 +49,86 @@ Algoritmo para restablecer un password
 -Primer comprobacion es saber si el usuario existe
 -Si el usuario existe se le envia el token 
 - El token se envia por mail y el usuario debera visitar un enlace e ingresar ese token, si el token es valido le permitimos restablecer su password
+
+
+JSON Web token (Forma en la que autenticamos a nuestros usuarios)
+
+
+¿Que es?
+
+Estandar abierto que define un formato compacto y seguro para transmitir informacion entre dos aplicaciones de manera segura como un objeto JSON
+
+consta de tres partes
+
+HEADER -- PAYLOAD -- SIGNATURE
+
+Se envia desde el formulario, el backend valida todo esto y arrancaba una sesion en el servidor
+
+Autenticacion: Se envian los datos desde el frontend al Backend, este valida todo el email y password y nos retorna un JSON Web Token con HEADER -- PAYLOAD -- SIGNATURE
+
+Autorizacion: esto nos lleva a la autorizacion desde el frontend enviamos un json web token hacia el backend y si el backend valida que tenemos permiso nos da el acceso a los datos
+
+Ventajas
+
+-- Seguridad: JWT utiliza algoritmos de firma digital para asegurar que los datos no han sido alterados durante la transmisión. Esto garantiza la integridad de la información y permite a las partes confiar en su validez.
+
+-- Autenticación y autorización: JWT se utiliza comúnmente para autenticar usuarios y permitirles acceder a recursos protegidos. Una vez que un usuario ha sido autenticado correctamente, se le proporciona un JWT que contiene información sobre sus permisos y roles. El servidor puede verificar la validez del token y autorizar o restringir el acceso.
+
+-- Transferencia eficiente de datos: JWT es un formato compacto que se puede transmitir fácilmente a través de diferentes medios, como encabezados HTTP, URL o incluso en el cuerpo de una solicitud HTTP. Esto lo hace adecuado para su uso en aplicaciones web y servicios de API.
+
+-- Stateless (sin estado): Los JWT son "sin estado", lo que significa que la información necesaria para autenticar y autorizar a un usuario se encuentra directamente en el token. Esto elimina la necesidad de almacenar información de sesión en el servidor, lo que facilita la escalabilidad de las aplicaciones distribuidas.
+
+En resumen, JWT proporciona un mecanismo seguro y eficiente para transmitir información entre dos partes, autenticar usuarios y autorizar el acceso a recursos protegidos en aplicaciones web y servicios de API. Su naturaleza compacta, seguridad y facilidad de uso lo convierten en una opción popular para la implementación de sistemas de autenticación y autorización.
+
+npm i jsonwebtoken nos permite generar el json web token y comprobarlo
+No pasar todos los datos en el JSON WEB TOKEN, solo necesitamos el id para saber que el usuario existe en nuestra base de datos
+
+Los json web token se pueden poner en localStorage o las cookies cualquiera de los dos esta bien
+
+Ventajas en localStorage
+
+facilidad de uso: es facil de utilizar y no requiere configuracion adicional para almacenar o recuperar datos
+Persistencia: Permanecen en el navegador los datos incluso despues de cerrarlo y reiniciar la computadora
+Rendimiento: Puede ser mas rapido acceder a los datos en localStorage que en las cookies debido a que no se envian con cada solicitud HTTP
+
+Desventajas
+
+Vulnerabilidad a ataques XSS: vulnerables a ataques de script entre sitios(XSS) si no se implementan adecuadas medidad de seguridad
+Capacidad limitada: esta limitado el almacenamiento maximo de 5-10M por dominio
+
+No compatible con solicitudes cruzadas(CORS): losd atos almacenados en localStorage no se envian automaticamente con las solicitudes CORS a otros dominios
+
+Ventajas de cookies
+
+Seguridad: Las cookies pueden configurarse con las banderas HttpOnly y Secure para aumentar la seguridad y proteger contra
+ataques XSS y CSRF.
+
+Soporte para CORS: Las cookies se envían automáticamente con las solicitudes CORS, lo que facilita el manejo de autenticación en aplicaciones distribuidas.
+
+Control de expiración: Puedes configurar una fecha de expiración para las cookies, y estas se eliminan automáticamente
+
+Desventajas
+
+Sobrecarga de red: Las cookies se envían con cada solicitud HTTP, lo que puede aumentar el tráfico de red si los tokens son grandes.
+
+Capacidad limitada: Al igual que localStorage, las cookies también tienen un tamaño máximo de almacenamiento por dominio (generalmente 4KB por cookie).
+
+Menos persistencia: Las cookies pueden ser eliminadas por el usuario o expirar automáticamente después de un período de tiempo, lo que puede
+requerir una renovación periódica de los tokens.
+
+Autenticacion y Autorizacion
+
+Procesos fundamentales en la seguridad de sistemas y aplicaciones, que a menudo se confunden, pero tienen propositos distintos
+
+Autenticacion
+
+Proceso de verificar la identidad de un usuario o entidad. Se trata de asegurarse de que el usuario es realmente quien dice ser
+Se hace tipicamente con credenciales como nombre de usuario y contraseñas, token, reconocimiento biometrico, entre otros
+¿Eres realmente quien dices ser?
+
+Autorizacion 
+Una vez que el usuario se verifico la autorizacion es el proceso de determinar si se le debe permitir acceder a recursos o realizar ciertas acciones
+Implica verificar sus permisos y toles en el sistemas. Ej: empleado puede estar autenticado pero puede o no estar autorizado para ver ciertos archivos o apps.
+¿Tienes permiso para hacer esto?
+
+Autenticacion verifica quien eres y la autorizacion es sobre que se te permite hacer
