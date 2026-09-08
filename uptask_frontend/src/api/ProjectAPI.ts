@@ -18,8 +18,8 @@ export async function createProject(formData : ProjectFormData) {
 
 
 export async function getProjects() {
-    try {
-        const {data} = await api('/projects') //no ponemos .get porque axios ya tiene por default que se haga un get
+     try {
+        const {data} = await api('/projects', ) //no ponemos .get porque axios ya tiene por default que se haga un get
         const response = dashboardProjectSchema.safeParse(data) //con esto obtenemos si lo que obtuvimos esta bien
         if(response.success){ //si el response.success es true que seria que esta bien lo que obtuvimos, se retorna el data
             return response.data

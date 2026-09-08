@@ -4,6 +4,7 @@ import User from "../models/Auth"
 import Token from "../models/Token"
 import { generateJWT } from "../utils/jwt"
 import { AuthEmail } from "../emails/AuthEmail"
+import { generateToken } from "../utils/token"
 
 
 export class AuthController {
@@ -29,7 +30,7 @@ export class AuthController {
 
             //Generar el token
             const token = new Token()
-            token.token = generateJWT({id: user._id})
+            token.token = generateToken()
             token.user = user._id
 
             //Enviar el email de confirmacion
@@ -89,7 +90,7 @@ export class AuthController {
                 //Se genera un nuevo token
                 const token = new Token()
                 token.user = user._id
-                token.token = generateJWT({id: user._id})
+                token.token = generateToken()
                 await token.save()
 
                 //Se envia el email
@@ -112,7 +113,7 @@ export class AuthController {
                 return res.status(401).json({ error: error.message })
             }
 
-            const token = generateJWT({id: user._id}) //se genera el token con el id del usuario
+            const token = generateJWT({ id: user._id }) //se genera el token con el id del usuario
 
             res.send(token) //lo vamos a autenticar en produccion
         } catch {
@@ -121,9 +122,6 @@ export class AuthController {
 
 
     }
-
-
-
 
     static requestConfirmationCode = async (req: Request, res: Response) => {
         try {
@@ -147,7 +145,7 @@ export class AuthController {
 
             //Generar el token
             const token = new Token()
-            token.token = generateJWT({id: user._id})
+            token.token = generateToken()
             token.user = user._id
 
             //Enviar el email de confirmacion
@@ -184,7 +182,7 @@ export class AuthController {
 
             //Generar el token
             const token = new Token()
-            token.token = generateJWT({id: user._id})
+            token.token = generateToken()
             token.user = user._id
             await token.save()
 
@@ -241,6 +239,12 @@ export class AuthController {
         } catch {
             res.status(500).json({ error: 'Hubo un error' })
         }
+    }
+
+    static user = async (req: Request, res: Response) => {
+        return res.json({ user: req.user }) //req.user es el usuario que se obtiene del middleware authenticate
+        
+        //muestra la info del user
     }
 
 }

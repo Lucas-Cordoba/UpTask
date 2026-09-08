@@ -4,7 +4,7 @@ import { z } from 'zod'
 const authSchema = z.object({
     name: z.string(),
     email: z.string().email(),
-    password: z.string,
+    password: z.string(),
     password_confirmation: z.string(),
     token: z.string()
 })
@@ -18,6 +18,16 @@ export type ConfirmToken = Pick<Auth, 'token'>
 export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
+
+/**Users */
+export const userSchema = authSchema.pick({
+    name:true,
+    email:true
+}).extend({
+    _id: z.string()
+})
+
+export type User = z.infer<typeof userSchema>
 
 /** Tasks */
 
@@ -58,3 +68,17 @@ export type Project = z.infer< typeof projectSchema>
 export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'>
 
 //sirve para crear un nuevo tipo de datos en TypeScript extrayendo únicamente las propiedades que necesitas de un tipo más grande (Project). sin el id
+
+
+/**Team*/
+
+const teamMemberSchema = userSchema.pick({
+    name:true,
+    email:true,
+    _id: true
+})
+
+
+export const teamMembersSchema = z.array(teamMemberSchema)
+export type TeamMember = z.infer<typeof teamMemberSchema>
+export type TeamMemberForm = Pick<TeamMember, 'email'>

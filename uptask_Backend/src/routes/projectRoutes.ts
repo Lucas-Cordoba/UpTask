@@ -3,16 +3,16 @@ import { body, param } from 'express-validator'
 import { ProjectController } from '../controllers/ProjectController'
 import { TaskController } from '../controllers/TaskController'
 import { handleInputErrors } from '../middleware/validation'
-import { projectExists } from '../middleware/project'
+import { projectExists } from '../middleware/Project'
 import { taskExists } from '../middleware/task'
 import { authenticate } from '../middleware/auth'
+import { TeamMemberController } from '../controllers/TeamController'
 
 const router = Router()
 
+router.use(authenticate)//esto lo que hace es que todas las rutas que esten debajo de esta linea van a pasar por el middleware de authenticate, y si no pasa por el middleware entonces no va a poder acceder a ninguna ruta de projectRoutes
 /** Routes for project */
 router.post('/',
-    
-    authenticate,
     body('projectName')
         .notEmpty().withMessage('El nombre del Proyecto es Obligatorio'),
     body('clientName')
@@ -33,7 +33,7 @@ router.get('/:id',
     param('id')
         .isMongoId().withMessage('ID no válido'),
     handleInputErrors,
-    ProjectController.getAllProjectById
+    ProjectController.getProjectById
 
 ) //en este caso se pone la ruta y el controlador que va a llamar esa ruta y la funcion que debe utilizar
 
@@ -118,5 +118,29 @@ router.post('/:projectId/tasks/:taskId/status',
 
 )
 
+/**Routes for teams */
+router.post('/:projectId/team/find',
+    body('email')
+        .isEmail().toLowerCase().withMessage('El email no es válido'),
+    handleInputErrors,
+    TeamMemberController.findTeamMemberByEmail
+)
 
+router.get('/:projectId/team',
+    TeamMemberController.getProjectTeam
+)
+
+router.post('/:projectId/team',
+    body('id')
+        .isMongoId().withMessage('ID no válido'),
+    handleInputErrors,
+    TeamMemberController.addMemberById
+)
+
+router.delete('/:projectId/team/:userId',
+    param('userId')
+        .isMongoId().withMessage('ID no válido'),
+    handleInputErrors,
+    TeamMemberController.removeMemberById
+)
 export default router

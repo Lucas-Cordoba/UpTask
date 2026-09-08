@@ -32,6 +32,7 @@ export const authenticate= async (req: Request, res: Response, next: NextFunctio
             //con el select se selecciona que campos se quieren traer del usuario, para evitar traer informacion sensible como la contraseña
             if(user){
                 req.user = user //si el usuario existe entonces se guarda en la request para que se pueda usar en el controlador
+                next() //si el usuario existe entonces se pasa al siguiente middleware o controlador
             }else{
                 res.status(500).json({error: 'Token no valido'})
             }
@@ -44,15 +45,6 @@ export const authenticate= async (req: Request, res: Response, next: NextFunctio
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    next()
 }
 
 

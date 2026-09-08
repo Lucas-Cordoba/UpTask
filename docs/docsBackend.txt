@@ -110,3 +110,8 @@ En Express se implementa por medio de middleware
 
 Un middleware nos permite darle un mejor orden a nuestras rutas para aplicar este patron de diseño para las URL's 
 Debido a que se ejecutan en las peticiones HTTP y antes del controlador, los hacen un gran lugar para poder ejecutar ciertas acciones referentes a si los proyectos existen o si el usuario tiene permisos para acceder a él
+
+Peticiones Interceptors
+
+Interceptors de solicitud:Se le conoce como REquest interceptors y se ejecuta antes de que se envie una peticion HTTP, se puede utilizar para tareas como agregar headers personalizados como en este caso que tenemos que enviar el token en nuestro header de autorizacion
+Interceptors de respeusta en ingles, Response interceptor y se ejecuta despues de una peticion HTTP, se utiliza para procesar una respuesta, realizar acciones en funcion del estado de la respuesta  

@@ -1,26 +1,29 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import type { UserLoginForm } from "@/types/index";
 import ErrorMessage from "@/components/ErrorMessage";
 import { authenticateUser } from "@/api/AuthAPI";
 import { toast } from "react-toastify";
-
+import {  useQueryClient } from '@tanstack/react-query'
 export default function LoginView() {
-
+//VER DE BORRAR CACHE DE REACT QUERY CUANDO HAGA LOGOUT
   const initialValues: UserLoginForm = {
     email: '',
     password: '',
   }
   const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
-
+  const navigate = useNavigate()
+ const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: authenticateUser,
     onError: (error) => {
       toast.error(error.message)
     },
     onSuccess: () =>{
-      toast.success('Iniciando Sesión...')
+      queryClient.invalidateQueries({queryKey: ['user']})  //esto es para que cuando haga logout, se borre la cache de react-query 
+    
+      navigate('/')
     }
   })
   const handleLogin = (formData: UserLoginForm) => mutate(formData)
