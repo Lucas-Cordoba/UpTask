@@ -3,6 +3,7 @@ import TaskCard from "./TaskCard"
 import { statusTranslations } from "@/locales/es"
 type TaskListProps = {
     tasks: Task[]
+    canEdit: boolean
 }
 type GroupedTasks = { //Este código define un tipo de TypeScript (llamado GroupedTasks) utilizando un índice de firma (index signature). Sirve para decirle a TypeScript cómo debe lucir un objeto cuyas propiedades (claves) no conocemos de antemano, pero sabemos qué tipo de datos tendrán
     [key: string]: Task[]
@@ -24,7 +25,7 @@ const statusStyles: { [key: string]: string } = { //Sirve para indicarle a TypeS
 }
 
 
-export default function TaskList({ tasks }: TaskListProps) {
+export default function TaskList({ tasks, canEdit }: TaskListProps) {
 
     const groupedTasks = tasks.reduce((acc, task) => {
         let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
@@ -47,7 +48,7 @@ export default function TaskList({ tasks }: TaskListProps) {
                             {tasks.length === 0 ? (
                                 <li className="text-gray-500 text-center pt-3">No Hay tareas</li>
                             ) : (
-                                tasks.map(task => <TaskCard key={task._id} task={task} />)
+                                tasks.map(task => <TaskCard key={task._id} task={task} canEdit={canEdit} />)
                             )}
                         </ul>
                     </div>

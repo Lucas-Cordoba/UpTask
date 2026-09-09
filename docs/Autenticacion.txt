@@ -132,3 +132,5 @@ Implica verificar sus permisos y toles en el sistemas. Ej: empleado puede estar 
 ¿Tienes permiso para hacer esto?
 
 Autenticacion verifica quien eres y la autorizacion es sobre que se te permite hacer
+
+Validar siempre en el cliente como en el servidor

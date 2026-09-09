@@ -4,7 +4,7 @@ import { ProjectController } from '../controllers/ProjectController'
 import { TaskController } from '../controllers/TaskController'
 import { handleInputErrors } from '../middleware/validation'
 import { projectExists } from '../middleware/Project'
-import { taskExists } from '../middleware/task'
+import { hasAuthorization, taskExists } from '../middleware/task'
 import { authenticate } from '../middleware/auth'
 import { TeamMemberController } from '../controllers/TeamController'
 
@@ -69,6 +69,7 @@ router.delete('/:id',
 router.param('projectId', projectExists) //toma un parametro y segundo un callback, con esto en todas las url que tengan el parametro projectId se va a ejecutar validateProjectExists
 
 router.post('/:projectId/tasks',
+    hasAuthorization,
     body('name')
         .notEmpty().withMessage('El nombre de la tarea es Obligatoria'),
     body('description')
@@ -83,6 +84,7 @@ router.get('/:projectId/tasks',
 router.param('taskId', taskExists)
 
 
+
 router.get('/:projectId/tasks/:taskId',
     param('taskId')
         .isMongoId().withMessage('ID no válido'),
@@ -91,6 +93,7 @@ router.get('/:projectId/tasks/:taskId',
 
 
 router.put('/:projectId/tasks/:taskId',
+    hasAuthorization,
     param('taskId')
         .isMongoId().withMessage('ID no válido'),
     body('name')
@@ -102,12 +105,14 @@ router.put('/:projectId/tasks/:taskId',
 
 
 router.delete('/:projectId/tasks/:taskId',
+    hasAuthorization,
     param('taskId')
         .isMongoId().withMessage('ID no válido'),
     handleInputErrors,
     TaskController.deleteTask)
 
 router.post('/:projectId/tasks/:taskId/status',
+    
     param('taskId')
         .isMongoId().withMessage('ID no válido'),
     body('status')

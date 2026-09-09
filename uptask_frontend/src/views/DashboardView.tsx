@@ -5,8 +5,12 @@ import { Link } from "react-router-dom"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteProject, getProjects } from "@/api/ProjectAPI"
 import { toast } from 'react-toastify'
+import { useAuth } from '@/hooks/useAuth'
+import { isManager } from '@/utils/policies'
 export default function DashboardView() {
 
+
+  const { data: user, isLoading: authLoading } = useAuth()
   const { data, isLoading } = useQuery({
     queryKey: ['projects'], //este queryKey debe ser unico
     queryFn: getProjects
@@ -20,14 +24,14 @@ export default function DashboardView() {
     },
     onSuccess: (data) => {
       toast.success(data)
-      queryClient.invalidateQueries({queryKey:['projects']}) //marcará como "obsoleta" (stale) la caché asociada a la clave ['projects'] y provocará un refresco automático (refetch) de esa consulta.    
+      queryClient.invalidateQueries({ queryKey: ['projects'] }) //marcará como "obsoleta" (stale) la caché asociada a la clave ['projects'] y provocará un refresco automático (refetch) de esa consulta.    
 
     }
   })
 
-  if (isLoading) return 'Cargando...'
+  if (isLoading && authLoading) return 'Cargando...' //cargando mientras carga el useQuery y el login
   console.log(data)
-  if (data) return ( //esto lo que hace es que si data tiene algo retorna algo
+  if (data && user) return ( //esto lo que hace es que si tiene data y usuario tiene algo retorna algo
     <>
 
       <h1 className="text-5xl font-black">
@@ -50,6 +54,14 @@ export default function DashboardView() {
             <li key={project._id} className="flex justify-between gap-x-6 px-5 py-10">
               <div className="flex min-w-0 gap-x-4">
                 <div className="min-w-0 flex-auto space-y-2">
+                  <div className='mb-2'>
+
+                    {
+                      isManager(project.manager, user._id) ?
+                        <p className='font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg inline-block py-1 px-5'>Manager</p> :
+                        <p className='font-bold text-xs uppercase bg-indigo-50 text-green-500 border-2 border-green-500 rounded-lg inline-block py-1 px-5'>Colaborador</p>
+                    }
+                  </div>
                   <Link to={`/projects/${project._id}`}
                     className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
                   >{project.projectName}</Link>
@@ -80,21 +92,26 @@ export default function DashboardView() {
                           Ver Proyecto
                         </Link>
                       </Menu.Item>
-                      <Menu.Item>
-                        <Link to={`/projects/${project._id}/edit`}
-                          className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                          Editar Proyecto
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <button
-                          type='button'
-                          className='block px-3 py-1 text-sm leading-6 text-red-500'
-                          onClick={() => mutate(project._id)}
-                        >
-                          Eliminar Proyecto
-                        </button>
-                      </Menu.Item>
+                      {isManager(project.manager, user._id) && (
+                        <>
+                          <Menu.Item>
+                            <Link to={`/projects/${project._id}/edit`}
+                              className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                              Editar Proyecto
+                            </Link>
+                          </Menu.Item>
+                          <Menu.Item>
+                            <button
+                              type='button'
+                              className='block px-3 py-1 text-sm leading-6 text-red-500'
+                              onClick={() => mutate(project._id)}
+                            >
+                              Eliminar Proyecto
+                            </button>
+                          </Menu.Item>
+                        </>
+                      )} {/**verifica para ver si manager es igual al usuario actual y si es igual muestra la seccion de eliminar o editar el proyecto */}
+
                     </Menu.Items>
                   </Transition>
                 </Menu>
