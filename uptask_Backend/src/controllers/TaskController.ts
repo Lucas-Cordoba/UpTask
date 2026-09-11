@@ -49,17 +49,20 @@ export class TaskController {
             //     return res.status(404).json({ error: error.message })
             // } esto se pone si no se usa un middlwarea
 
-            if (req.task.project.toString() !== req.project._id.toString()) {  //poner toString porque es un objectId y esta verificacion la para tareas que no pertenezcan a un proyecto
-                const error = new Error('Accipon no válida')
-                return res.status(404).json({ error: error.message })
-            }
-
-            res.json(req.task)
-
-
-        } catch (error) {
-            res.status(500).json({ error: 'Hubo un error' })
+            if (req.task.project.toString() !== req.project._id.toString()) {
+            const error = new Error('Acción no válida')
+            return res.status(404).json({ error: error.message })
         }
+
+        console
+        const task = await Task.findById(req.task._id)
+            .populate({ path: 'completedBy.user', select: '_id name email' }) // 👈 Cambiado 'id' a '_id'
+            .populate({path: 'notes', populate: {path: 'notes.createdBy', select: '_id name email' }})
+        res.json(task)
+
+    } catch (error) {
+        res.status(500).json({ error: 'Hubo un error' })
+    }
     }
 
 
@@ -135,6 +138,15 @@ export class TaskController {
             const { status } = req.body
             req.task.status = status
 
+            const data = {
+                
+               user: req.user._id,
+               status
+
+
+            }
+
+            req.task.completedBy.push(data)
             await req.task.save()
 
             res.send('El estado se actualizo correctamente')

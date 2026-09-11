@@ -1,4 +1,4 @@
-import mongoose, {Schema, Document, Types} from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 const taskStatus = {
     PENDING: 'pending',
@@ -17,9 +17,14 @@ export interface ITask extends Document  //se pone Type para que no haya dos var
     description: string
     project: Types.ObjectId //Con esto lo que hacemos es que cada tarea tiene un proyecto y su tipo de relacion va a ser un Object.ID
     status: TaskStatus
+    completedBy: {
+        user: Types.ObjectId,
+        status: TaskStatus
+    }[] //se pone asi porque el completedBy va a almacenar el usuario y el estado de la tarea
+    notes: Types.ObjectId[] //va a ser una arreglo porque vamos a tener un arreglo de notas
 } //este es el esquema de TypeScript
 
-export const TaskSchema: Schema = new Schema ({
+export const TaskSchema: Schema = new Schema({
     name: {
         type: String,
         required: true,  //esto dice que es obligatorio
@@ -39,8 +44,26 @@ export const TaskSchema: Schema = new Schema ({
         type: String,
         enum: Object.values(taskStatus), // se puede poner solo taskStatus, Un enum (enumeración) en TypeScript se utiliza para definir un conjunto de constantes con nombre, lo que permite agrupar valores relacionados y darles una etiqueta más clara e intencional.
         default: taskStatus.PENDING //el default de cada tarea creada
-    }
-},{timestamps: true}) //este es el esquema de mongoose
+    },
+    completedBy: [{ //agregamos un historial de quien fue actualizando
+        user: {
+            type: Types.ObjectId,
+            ref: 'User',
+            default: null
+        },
+        status: {
+            type: String,
+            enum: Object.values(taskStatus),
+            default: taskStatus.PENDING
+    }}],
+    notes:[
+        {
+            type: Types.ObjectId,
+            ref: 'Note'
+        }
+    ]
+
+}, { timestamps: true }) //este es el esquema de mongoose
 
 //TypeScript detecta los subdocumentos como si fueran arreglos 
 

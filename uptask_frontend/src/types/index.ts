@@ -29,10 +29,25 @@ export const userSchema = authSchema.pick({
 
 export type User = z.infer<typeof userSchema>
 
+
+/** Note */
+
+const noteSchema = z.object({
+    _id: z.string(),
+    content: z.string(),
+    createdBy: userSchema,
+    task: z.string()
+})
+
+export type Note = z.infer<typeof noteSchema>
+export type NoteFormData = Pick<Note, 'content'>
+
+
+
 /** Tasks */
 
 export const taskStatusSchema = z.enum([
-    "pending","onHold", "inProgress", "underReview"
+    "pending","onHold", "inProgress", "underReview", "completed"
 ])
 export type TaskStatus = z.infer<typeof taskStatusSchema>
 
@@ -42,11 +57,18 @@ export const taskSchema = z.object({
     description: z.string(),
     project: z.string(),
     status: taskStatusSchema,
+    completedBy: z.array(z.object({
+        _id: z.string().optional(),
+        user:userSchema,
+        status: taskStatusSchema
+    })), //es porque puede ser null si no pongo eso me da error 
     createdAt:z.string(),
     updatedAt:z.string()
 })
 
 export type Task = z.infer<typeof taskSchema>
+
+
 export type TaskFormData = Pick<Task, 'name' | 'description'> //Lo que necesitamos para el formulario
 /** Projects */
 export const projectSchema = z.object({

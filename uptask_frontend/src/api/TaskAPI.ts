@@ -26,6 +26,7 @@ export async function getTaskById({projectId,taskId} : Pick<TaskAPI, 'projectId'
         const url= `/projects/${projectId}/tasks/${taskId}`
         const {data} = await api(url) //no ponemos .get porque axios ya tiene por default que se haga un get
         const response = taskSchema.safeParse(data)
+        console.log(response)
         if(response.success){
             return response.data
         }

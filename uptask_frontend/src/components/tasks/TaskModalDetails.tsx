@@ -7,15 +7,16 @@ import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/utils';
 import { statusTranslations } from '@/locales/es';
 import type { TaskStatus } from '@/types';
+import NotesPanel from '../notes/NotesPanel';
 
 
 export default function TaskModalDetails() {
 
-    const params = useParams()
-    const projectId = params.projectId!
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
     const taskId = queryParams.get('viewTask')!
+    const params = useParams()
+    const projectId = params.projectId!
     const show = taskId ? true : false
 
     const navigate = useNavigate()
@@ -27,15 +28,15 @@ export default function TaskModalDetails() {
         retry: false
     })
 
-    const queryClient= useQueryClient()
-    const {mutate} = useMutation({
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation({
         mutationFn: updateStatus,
         onError: (error) => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey: ['editProject', projectId]})
-            queryClient.invalidateQueries({queryKey: ['task', taskId]})
+            queryClient.invalidateQueries({ queryKey: ['editProject', projectId] })
+            queryClient.invalidateQueries({ queryKey: ['task', taskId] })
             toast.success(data)
         }
     })
@@ -43,7 +44,7 @@ export default function TaskModalDetails() {
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const status = e.target.value as TaskStatus
-        const data = {projectId, taskId, status}
+        const data = { projectId, taskId, status }
 
         mutate(data)
     }
@@ -88,6 +89,23 @@ export default function TaskModalDetails() {
                                     > {data.name}
                                     </Dialog.Title>
                                     <p className='text-lg text-slate-500 mb-2'>Descripción: {data.description}</p>
+
+                                    {data.completedBy.length ? (
+                                        <>
+                                            <p className='text-2xl text-slate-500 mb-2'>Historial de Cambios</p>
+                                            <ul className='list-decimal'>
+                                                {data.completedBy.map((activityLog) => (
+                                                    <li key={activityLog._id}>
+                                                        <span className='font-bold text-slate-600'>
+                                                            {statusTranslations[activityLog.status]}</span>
+                                                        {' '} por: {activityLog.user.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
+
+                                    ) : null}
+
                                     <div className='my-5 space-y-3'>
                                         <label className='font-bold'>Estado Actual: </label>
                                         <select
@@ -95,12 +113,14 @@ export default function TaskModalDetails() {
                                             defaultValue={data.status}
                                             onChange={handleChange}
                                         >
-                                            {Object.entries(statusTranslations).map(([key,value])=>(
+                                            {Object.entries(statusTranslations).map(([key, value]) => (
                                                 <option key={key} value={key}>{value}</option>
                                             ))} {/*toma un objeto JavaScript y lo convierte en un arreglo (array) de pares clave-valor, donde cada elemento es a su vez un arreglo con dos elementos: [clave, valor].*/}
 
                                         </select>
                                     </div>
+
+                                    <NotesPanel/>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
