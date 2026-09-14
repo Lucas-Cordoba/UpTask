@@ -36,7 +36,8 @@ const noteSchema = z.object({
     _id: z.string(),
     content: z.string(),
     createdBy: userSchema,
-    task: z.string()
+    task: z.string(),
+    createdAt: z.string()
 })
 
 export type Note = z.infer<typeof noteSchema>
@@ -62,6 +63,9 @@ export const taskSchema = z.object({
         user:userSchema,
         status: taskStatusSchema
     })), //es porque puede ser null si no pongo eso me da error 
+    notes: z.array(noteSchema.extend({
+        createdBy: userSchema
+    })),
     createdAt:z.string(),
     updatedAt:z.string()
 })
