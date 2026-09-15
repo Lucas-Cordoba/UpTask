@@ -243,8 +243,55 @@ export class AuthController {
 
     static user = async (req: Request, res: Response) => {
         return res.json({ user: req.user }) //req.user es el usuario que se obtiene del middleware authenticate
-        
+
         //muestra la info del user
+    }
+
+
+    /** Profile*/
+
+    static updateProfile = async (req: Request, res: Response) => {
+        const { name, email } = req.body
+
+        req.user.name = name //no hace falta buscar estos datos porque como esta logueado lo sacamos de ahi
+        req.user.email = email
+
+        const userExists = await User.findOne({ email })
+
+        if (userExists && userExists._id.toString() !== req.user._id.toString()) {
+            const error = new Error('El email ya esta registrado')
+            return res.status(409).json({ error: error.message })
+
+        }
+
+        try {
+            await req.user.save()
+            res.send('Perfil Actualizado correctamente')
+        } catch (error) {
+            res.status(500).send('Hubo un error')
+        }
+    }
+
+    static updateCurrentUserPassword = async (req: Request, res: Response) => { //no es como el anterior porque de este ya sabemos el usuario y el token que lo tiene porque esta authenticado
+        const { current_password, password, password_confirmation } = req.body
+
+        const user = await User.findById(req.user._id)
+
+        const isPasswordCorrect = await checkPassword(current_password, user.password)
+
+        if (!isPasswordCorrect) {
+            const error = new Error('El password actual es incorrecto')
+            return res.status(401).json({ error: error.message })
+        }
+
+        try {
+
+            user.password = await hashPassword(password)
+            await user.save()
+            res.send('El password se modificó correctamente')
+        } catch (error) {
+             res.status(500).json({ error: 'Hubo un error' })
+        }
     }
 
 }

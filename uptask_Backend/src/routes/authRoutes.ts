@@ -89,5 +89,35 @@ router.get('/user',
     authenticate,
     AuthController.user
 )
+
+/*Profile */
+
+router.put('/profile',
+    authenticate, //se pone authenticate porque debe estar authenticado el usuario
+    body('name')
+        .notEmpty().withMessage('El nombre no puede ir vacio'),
+    body('email')
+        .isEmail().withMessage('E-mail no válido'),
+    handleInputErrors,
+    AuthController.updateProfile
+) //es un .put porque es una actualizacion hacia /profile
+
+router.post('/update-password',
+    authenticate,
+    body('current_password') //este seria el password actual
+        .notEmpty().withMessage('El password actual no puede ir vacio'),
+    body('password')
+        .isLength({ min: 8 }).withMessage('El Password es corto, minimo 8 caracteres'),
+    body('password_confirmation')
+        .custom((value, { req }) => { //value trae el nombre de la variable, req.body.password trae el valor
+            if (value !== req.body.password) {
+                throw new Error('Los Password no son iguales')
+            }
+            return true
+        }),
+    handleInputErrors,
+    AuthController.updateCurrentUserPassword
+
+)
 export default router
 
