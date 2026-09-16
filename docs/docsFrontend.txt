@@ -103,3 +103,35 @@ params (useParams)
 
 Input Token
 npm i @chacra-ui/pin-input  //es para la interfaz de usuario del ingreso del token de confirmacion
+
+Drag and Drop Kit 
+
+es una librería moderna, ligera y modular para React diseñada para implementar interfaces de arrastrar y soltar (drag and drop) de forma accesible, con buen rendimiento y extensible.
+
+npm install @dnd-kit/core
+npm install @dnd-kit/sortable
+npm install @dnd-kit/utilities @dnd-kit/modifiers
+
+
+Draggable: es el elemento que queremos arrastrar dentro de tu droppable y siempre hay que registrar un context
+que soporta ciertas opciones para el comportamiento que queremos agregar en este caso grag and drop
+
+tambien tiene soporte de sortable: podes acomodar nuestras tareas digamos de arriba hacia abajo
+
+setNodeRef (Función)
+
+Qué hace: Asigna la referencia del nodo DOM del elemento que quieres hacer arrastrable a @dnd-kit
+
+listeners (Objeto)
+
+Qué hace: Contiene los eventos de escucha del ratón, teclado y pantalla táctil (como onMouseDown, onTouchStart, onKeyDown, etc.)
+
+attributes (Objeto)
+
+Qué hace: Contiene los atributos de accesibilidad HTML y ARIA (como tabIndex, role="button", aria-describedby, etc.).
+
+transform (Objeto o null)
+
+Qué hace: Contiene las coordenadas actuales del movimiento mientras se arrastra (x, y, scaleX, scaleY).
+
+isOver es una propiedad booleana (true o false) que indica si un elemento arrastrable está situado actualmente justo encima de esa zona droppable.

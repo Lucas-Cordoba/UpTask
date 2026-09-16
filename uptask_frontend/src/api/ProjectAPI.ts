@@ -1,4 +1,4 @@
-import { dashboardProjectSchema, type ProjectFormData, type Project } from "@/types";
+import { dashboardProjectSchema, type ProjectFormData, type Project, editProjectSchema } from "@/types";
 import api from "@/lib/axios";
 import { isAxiosError } from "axios";
 
@@ -40,7 +40,10 @@ type ProjectAPIType = {
 export async function getProjectById(id: Project['_id']) {
     try {
         const {data} = await api(`/projects/${id}`) //no ponemos .get porque axios ya tiene por default que se haga un get
-        return data
+        const response = editProjectSchema.safeParse(data)
+        if(response.success){
+            return response.data
+        }
     } catch (error) {
         if(isAxiosError(error) && error.response){
             throw new Error(error.response.data.error) //con este if y esto va a caer en la parte de onError de ReactQuery

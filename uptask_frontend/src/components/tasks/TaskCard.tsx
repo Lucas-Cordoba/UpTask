@@ -6,12 +6,18 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteTask } from "@/api/TaskAPI"
 import { toast } from "react-toastify"
+import {useDraggable} from '@dnd-kit/core'
 
 type TaskCardProps = {
     task: Task
     canEdit: boolean
 }
 export default function TaskCard({ task, canEdit }: TaskCardProps) {
+
+    const { attributes, listeners, setNodeRef,transform} = useDraggable({ //en la documentacion viene todo lo que soporta 
+        id: task._id
+    }) //requiere que le pases un valor
+
 
 
     const navigate = useNavigate()
@@ -31,14 +37,30 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
     })
 
 
+    const style = transform ? {
+        // transform: `translateX(${transform.x}px)` //propiedad que te permite mover un elemetno de izquierda a derecha
+        // transform: `translateY(${transform.y}px)` //propiedad que te permite mover un elemetno de arriba a abajo
+        transform: `translate3D(${transform.x}px, ${transform.y}px,0)`,
+        padding: "1.25rem",
+        backgroundColor: "#FFF",
+        width: '300px',
+        display: 'flex',
+        borderWidth: '1px',
+        borderColor: 'rgb(203 213 225 / var(--tw-border-opacity))' 
+        //no convence mucho este css para que cuando arrastre parece que se arrastre todopero por ahoira es la unica solucion  
+        
+    } : undefined
     return (
         <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
-            <div className="min-2-0 flex flex-col gap-y-4">
-                <button
-                    type="button"
+            <div 
+            {...listeners} //eventos de presionar y arrastrar
+            {...attributes} //arrastra los atributos
+            ref={setNodeRef} //elemento que se requiere finalmente
+            style={style} //ponemos todo el div porque si ponemos en li te mueve todo pero deshabiltia las acciones de los puntitos, es un bug que no se mueva todo el div DESHABILITA TODAS LAS FUNCIONES QUE TIENE EL BOTON
+            className="min-2-0 flex flex-col gap-y-4">
+                <p
                     className="text-xl font-bold text-slate-600 text-left"
-                    onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
-                >{task.name}</button>
+                >{task.name}</p>
                 <p className="text-slate-500">{task.description}</p>
             </div>
 

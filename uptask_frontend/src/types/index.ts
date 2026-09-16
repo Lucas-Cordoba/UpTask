@@ -20,7 +20,7 @@ export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 export type UpdateCurrentUserPasswordForm = Pick<Auth,'current_password' | 'password' | 'password_confirmation'>
-
+export type CheckPasswordForm = Pick<Auth, 'password'>
 /**Users */
 export const userSchema = authSchema.pick({
     name:true,
@@ -83,6 +83,12 @@ export const projectSchema = z.object({
     clientName: z.string(),
     description: z.string(),
     manager: z.string(userSchema.pick({_id: true}))
+})
+
+export const editProjectSchema = projectSchema.pick({
+    projectName: true,
+    clientName: true,
+    description: true
 })
 
 export const dashboardProjectSchema = z.array(
