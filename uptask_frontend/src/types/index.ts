@@ -88,9 +88,9 @@ export const projectSchema = z.object({
     projectName: z.string(),
     clientName: z.string(),
     description: z.string(),
-    manager: z.string(userSchema.pick({_id: true})),
+    manager: z.string(),
     tasks: z.array(taskProjectSchema),
-    team: z.array(z.string(userSchema.pick({_id: true})))
+    team: z.array(z.string())
 })
 
 export const editProjectSchema = projectSchema.pick({
@@ -109,7 +109,7 @@ export const dashboardProjectSchema = z.array(
     }) //es el mismo que el Schema anterior pero ahora lo queremos como arreglo y no es un type lo queremos como shema para validar que la respuesta que obtenemos es la correcta 
 )
 export type Project = z.infer< typeof projectSchema>
-export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description' | 'manager'>
+export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description'>
 export type EditProjectFormData = z.infer<typeof editProjectSchema>
 //sirve para crear un nuevo tipo de datos en TypeScript extrayendo únicamente las propiedades que necesitas de un tipo más grande (Project). sin el id
 

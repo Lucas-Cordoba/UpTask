@@ -21,7 +21,7 @@ export default function NoteDetail({ note }: NoteDetailProps) {
 
 
   const projectId= params.projectId!
-  const taskId = queryParams.get('viewTask')
+  const taskId = queryParams.get('viewTask')!
 
   const queryClient = useQueryClient()
   
