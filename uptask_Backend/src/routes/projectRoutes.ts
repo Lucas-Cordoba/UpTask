@@ -39,10 +39,13 @@ router.get('/:id',
 
 ) //en este caso se pone la ruta y el controlador que va a llamar esa ruta y la funcion que debe utilizar
 
+/** Routes for tasks*/
 
-router.put('/:id',
+router.param('projectId', projectExists) //toma un parametro y segundo un callback, con esto en todas las url que tengan el parametro projectId se va a ejecutar validateProjectExists
 
-    param('id')
+router.put('/:projectId',
+
+    param('projectId')
         .isMongoId().withMessage('ID no válido'),
     body('projectName')
         .notEmpty().withMessage('El nombre del Proyecto es Obligatorio'),
@@ -51,24 +54,23 @@ router.put('/:id',
     body('description')
         .notEmpty().withMessage('La descripcion es Obligatoria'),
     handleInputErrors,
+    hasAuthorization,
     ProjectController.updateProject
 
 ) //en este caso se pone la ruta y el controlador que va a llamar esa ruta y la funcion que debe utilizar
 
 
 
-router.delete('/:id',
+router.delete('/:projectId',
 
-    param('id')
+    param('projectId')
         .isMongoId().withMessage('ID no válido'),
     handleInputErrors,
+    hasAuthorization,
     ProjectController.deleteProject
 
 )
 
-/** Routes for tasks*/
-
-router.param('projectId', projectExists) //toma un parametro y segundo un callback, con esto en todas las url que tengan el parametro projectId se va a ejecutar validateProjectExists
 
 router.post('/:projectId/tasks',
     hasAuthorization,

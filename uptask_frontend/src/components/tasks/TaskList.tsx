@@ -1,5 +1,5 @@
 import { DndContext, DragEndEvent } from "@dnd-kit/core"; //<DndContext> es el componente contenedor principal (el proveedor de contexto) de @dnd-kit/core. Sirve para coordinar, gestionar y sincronizar todo el estado global del sistema de arrastrar y soltar (drag and drop) en tu aplicación.
-import { Project, type Task, type TaskStatus } from "@/types"
+import { Project, TaskProject, type TaskStatus } from "@/types"
 import TaskCard from "./TaskCard"
 import { statusTranslations } from "@/locales/es"
 import DropTask from "./DropTask"
@@ -8,11 +8,11 @@ import { updateStatus } from "@/api/TaskAPI"
 import { toast } from "react-toastify"
 import { useParams } from "react-router-dom"
 type TaskListProps = {
-    tasks: Task[]
+    tasks: TaskProject[]
     canEdit: boolean
 }
 type GroupedTasks = { //Este código define un tipo de TypeScript (llamado GroupedTasks) utilizando un índice de firma (index signature). Sirve para decirle a TypeScript cómo debe lucir un objeto cuyas propiedades (claves) no conocemos de antemano, pero sabemos qué tipo de datos tendrán
-    [key: string]: Task[]
+    [key: string]: TaskProject[]
 }
 const initialStatusGroups: GroupedTasks = {
     pending: [],
@@ -64,8 +64,8 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
             const status = over.id as TaskStatus //si le pongo .toString() da error
             mutate({ projectId, taskId, status })
 
-            queryClient.setQueryData<Project>(['project', projectId], (prevData) => {
-                const updatedTasks = prevData.tasks.map((task : Task) => {
+            queryClient.setQueryData(['project', projectId], (prevData: Project) => {
+                const updatedTasks = prevData.tasks.map((task) => {
                     if(task._id === taskId){
                         return{
                             ...task,

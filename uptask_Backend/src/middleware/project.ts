@@ -1,5 +1,5 @@
 //Este Middleware lo que hace es verificar que exista el proyecto
-
+//cuando tenemos codigo repetido es mejor agregarlo a un middleware
 import type {Request, Response, NextFunction} from 'express'
 import Project, { IProject } from '../models/Project'
 

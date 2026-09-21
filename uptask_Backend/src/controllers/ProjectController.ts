@@ -61,27 +61,13 @@ export class ProjectController { //este se va a mandar a llamar desde router
     }
     static updateProject = async (req: Request, res: Response) => {
 
-        const { id } = req.params
         try {
-            const project = await Project.findById(id) //toma dos parametros uno el id, y tambien lo que enviamos por formulario
+          
 
-
-            if (!project) {
-                const error = new Error('Proyecto No encontrado')
-                return res.status(400).json({ error: error.message })
-            }
-
-            if(project.manager.toString() !== req.user?._id.toString()){ //esto es para que solo el manager pueda ver el proyecto, y no cualquier usuario que tenga el id del proyecto
-           
-                const error = new Error('Solo el manager puede actualizar el proyecto, acceso denegado')
-                return res.status(404).json({ error: error.message })
-            } //verifica que el manager del proyecto sea el mismo que el usuario que esta logueado, y si no es asi entonces no se puede actualizar el proyecto
-
-
-            project.projectName = req.body.projectName
-            project.clientName = req.body.clientName
-            project.description = req.body.description
-            await project.save()
+            req.project.projectName = req.body.projectName
+            req.project.clientName = req.body.clientName
+            req.project.description = req.body.description
+            await req.project.save()
             res.send('Proyecto Actualizado')
 
 
@@ -92,24 +78,9 @@ export class ProjectController { //este se va a mandar a llamar desde router
     }
     static deleteProject = async (req: Request, res: Response) => {
 
-        const { id } = req.params
+        
         try {
-            // const project = await Project.findByIdAndDelete(id) // una forma de hacerlo,las funciones findByIdAndDelete y demas ya las realiza
-
-            const project = await Project.findById(id)
-
-            await project.deleteOne() //otra forma
-
-            if (!project) {
-                const error = new Error('Proyecto No encontrado')
-                return res.status(400).json({ error: error.message })
-            }
-
-            if(project.manager.toString() !== req.user?._id.toString()){ //esto es para que solo el manager pueda ver el proyecto, y no cualquier usuario que tenga el id del proyecto
-           
-                const error = new Error('Solo el manager puede eliminar el proyecto, acceso denegado')
-                return res.status(404).json({ error: error.message })
-            } //verifica que el manager del proyecto sea el mismo que el usuario que esta logueado, y si no es asi entonces no se puede eliminar el proyecto
+            await req.project.deleteOne() //otra forma
             res.send('Proyecto Eliminado')
 
 

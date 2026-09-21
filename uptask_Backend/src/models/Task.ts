@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import Note from "./Note";
 
 const taskStatus = {
     PENDING: 'pending',
@@ -64,6 +65,17 @@ export const TaskSchema: Schema = new Schema({
     ]
 
 }, { timestamps: true }) //este es el esquema de mongoose
+
+//Middleware(Ver middleware disponibles en la documentacion de mongoose)
+//define un middleware o hook de tipo "pre" sobre el modelo de TaskSchema para el evento deleteOne
+//document: true: Le indica a Mongoose que este hook debe ejecutarse como Document Middleware. De esta manera, dentro de la función, this es el documento de Mongoose que se va a eliminar (lo que te permite acceder a sus propiedades como this._id, this.title, etc.).
+// query: false: Le indica a Mongoose que no ejecute este hook cuando la eliminación se haga mediante una consulta directa (Task.deleteOne({ ... })).
+TaskSchema.pre('deleteOne', {document: true},async function(){
+    const taskId= this._id
+    if(!taskId) return 
+    await Note.deleteMany({task: taskId})
+    //prepara la eliminación en cascada de sus notas antes de que la tarea sea borrada. cuando se eliminen las tareas se deben eliminar las notas
+})
 
 //TypeScript detecta los subdocumentos como si fueran arreglos 
 

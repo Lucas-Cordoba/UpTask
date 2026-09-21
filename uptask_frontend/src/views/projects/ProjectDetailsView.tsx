@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { getProjectById } from "@/api/ProjectAPI"
+import { getFullProject } from "@/api/ProjectAPI"
 import { Navigate } from "react-router-dom"
 import AddTaskModal from "@/components/tasks/AddTaskModal"
 import TaskList from "@/components/tasks/TaskList"
@@ -20,7 +20,7 @@ export default function ProjectDetailsView() {
     const { data: user, isLoading: authLoading } = useAuth()
     const { data, isLoading, isError } = useQuery({
         queryKey: ['editProject', projectId], //este queryKey debe ser unico, se pone projectId para que sea unica cada key y no muestre datos de consultas anteriores
-        queryFn: () => getProjectById(projectId), //cuando se pasa un parametro en la funcionse debe hacer un callback
+        queryFn: () => getFullProject(projectId), //cuando se pasa un parametro en la funcionse debe hacer un callback
         retry: false
         // retry sirve para controlar cuántas veces reintentará la petición automáticamente cuando esta falle
         //Define la cantidad exacta de reintentos. Si pones retry: 1, intentará la consulta original y, si falla, hará 1 reintento adicional.

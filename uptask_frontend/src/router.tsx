@@ -15,6 +15,7 @@ import ProjectTeamView from "./views/projects/ProjectTeamView";
 import ProfileView from "./views/profile/ProfileView";
 import ChangePasswordView from "./views/profile/ChangePasswordView";
 import ProfileLayout from "./Layouts/ProfileLayout";
+import NotFound from "./views/404/NotFound";
 
 export default function Router() {
 
@@ -41,6 +42,10 @@ export default function Router() {
                     <Route path="/auth/request-code" element={<RequestNewCode />} />
                     <Route path="/auth/forgot-password" element={<ForgotPasswordView />} />
                     <Route path="/auth/new-password" element={<NewPasswordView />} />
+                </Route>
+
+                <Route element={<AuthLayout />}>
+                    <Route path='/404' element={<NotFound />} /> {/** Se puede poner 404 o un * y lo que dice es que si no se cumple ninguna de esas vistas te reedirige a esa url */}
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -72,17 +72,25 @@ export const taskSchema = z.object({
     updatedAt:z.string()
 })
 
+export const taskProjectSchema = taskSchema.pick({
+     _id: true,
+     name: true,
+     description: true,
+     status: true
+})
 export type Task = z.infer<typeof taskSchema>
-
-
 export type TaskFormData = Pick<Task, 'name' | 'description'> //Lo que necesitamos para el formulario
+export type TaskProject = z.infer<typeof taskProjectSchema>
+
 /** Projects */
 export const projectSchema = z.object({
     _id: z.string(), //es un ObjectId pero en el json viene plano
     projectName: z.string(),
     clientName: z.string(),
     description: z.string(),
-    manager: z.string(userSchema.pick({_id: true}))
+    manager: z.string(userSchema.pick({_id: true})),
+    tasks: z.array(taskProjectSchema),
+    team: z.array(z.string(userSchema.pick({_id: true})))
 })
 
 export const editProjectSchema = projectSchema.pick({
@@ -102,7 +110,7 @@ export const dashboardProjectSchema = z.array(
 )
 export type Project = z.infer< typeof projectSchema>
 export type ProjectFormData = Pick<Project, 'projectName' | 'clientName' | 'description' | 'manager'>
-
+export type EditProjectFormData = z.infer<typeof editProjectSchema>
 //sirve para crear un nuevo tipo de datos en TypeScript extrayendo únicamente las propiedades que necesitas de un tipo más grande (Project). sin el id
 
 

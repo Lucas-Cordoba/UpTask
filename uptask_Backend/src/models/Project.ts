@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, PopulatedDoc, Types } from "mongoose"; //PopulateDoc es una forma de traernos la referencia en este caso de la tarea
-import { ITask } from "./Task";
+import Task, { ITask } from "./Task";
 import { IUser } from "./Auth";
+import Note from "./Note";
 
 export interface IProject extends Document //se pone Type para que no haya dos variables llamadas iguales
 {
@@ -51,6 +52,17 @@ const ProjectSchema: Schema = new Schema({
 }, { timestamps: true }) //este ,{timestamps: true} almacena cuando se creo el registro y cuando lo actualizamos
 
 
+//Middleware
+ProjectSchema.pre('deleteOne', {document: true},async function(){
+    const projectId= this._id
+    if(!projectId) return 
+    const tasks = await Task.find({project: projectId})
+    for(const task of tasks){
+        await Note.deleteMany({task: task._id})
+    }
+    await Task.deleteMany({project: projectId})
+    //prepara la eliminación en cascada de sus notas antes de que la tarea sea borrada. cuando se eliminen las tareas se deben eliminar las notas
+})
 const Project = mongoose.model<IProject>('Project', ProjectSchema) //De esta manera agregamos este modelo a la instancia de mongoose
 //ese modelo de Mongoose hace referencia al ProjectType
 export default Project
