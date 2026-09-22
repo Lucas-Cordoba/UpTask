@@ -2,7 +2,7 @@ import { Navigate, useLocation, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { getTaskById } from "@/api/TaskAPI"
 import EditTaskModal from "./EditTaskModal"
-//Lo unico que hace este componente es renderizar a EditTaskModal
+//Lo unico que hace este componente es renderizar a EditTaskModall
 export default function EditTaskData() {
 
     const params = useParams()
