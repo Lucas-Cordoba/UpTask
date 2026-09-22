@@ -2,19 +2,29 @@ import { CorsOptions } from "cors";
 
 export const corsConfig: CorsOptions = {
     origin: function (origin, callback) {
+        const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, "");
 
-        const whitelist = [process.env.FRONTEND_URL];
-        // console.log(process.argv) //serie de parametros que pasamos cuando se ejecuta este programa o aplicacion 
-        if (process.argv[2] === '--api') { //vemos si el parametro que se pasa es api
-            whitelist.push(undefined)
-        } //debo ejecutar el servidor con npm run dev:api para no tener error de cors
-        // Muestra en consola qué origen intenta conectarse (útil para depurar)
-        // console.log("Origen entrante:", origin);
+        const whitelist = [
+            frontendUrl,
+            "http://localhost:5173",
+            "http://localhost:3000"
+        ];
 
-        if (!origin || whitelist.includes(origin)) {
+        // Si usas el parámetro --api en la consola
+        if (process.argv[2] === '--api') {
+            whitelist.push(undefined);
+        }
+
+        // 1. Permite llamadas sin origin (Postman, scripts o --api)
+        // 2. Permite orígenes en la whitelist
+        // 3. Permite cualquier vista previa desplegada en Vercel (*.vercel.app)
+        const isAllowedVercel = origin?.endsWith('.vercel.app');
+
+        if (!origin || whitelist.includes(origin) || isAllowedVercel) {
             callback(null, true);
         } else {
-            callback(new Error('Error de CORS'));
+            // Pasar false en lugar de lanzar un Error evita el fallo HTTP 500 en preflight
+            callback(null, false);
         }
     }
 };
