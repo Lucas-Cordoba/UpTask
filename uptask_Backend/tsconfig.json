@@ -6,8 +6,8 @@
       "esnext"
     ],
     "target": "ES2022",
-    "moduleResolution": "NodeNext",
     "module": "CommonJS",
+    "moduleResolution": "node",
     "strict": false,
     "sourceMap": true,
     "esModuleInterop": true,
