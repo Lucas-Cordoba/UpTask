@@ -1,8 +1,5 @@
 import type { Request, Response } from 'express'
 import User from '../models/Auth'
-import { error } from 'node:console'
-import { isDate } from 'node:util/types'
-import { projectExists } from '../middleware/Project'
 import Project from '../models/Project'
 
 export class TeamMemberController {
