@@ -8,7 +8,7 @@ interface IEmail {
 export class AuthEmail {
     static sendConfirmationEmail = async ( user : IEmail) => {
         const info = await transporter.sendMail({
-            from: 'UpTask <admin@uptask.com>',
+            from: 'UpTask <onboarding@resend.dev>', // <--- CAMBIADO AQUÍ
             to: user.email,
             subject: 'UpTask - Confirma tu cuenta',
             text: 'UpTask - Confirma tu cuenta',
@@ -17,14 +17,14 @@ export class AuthEmail {
                 <a href="${process.env.FRONTEND_URL}/auth/confirm-account">Confirmar Cuenta</a>
                 <p>E ingresa el codigo: <b>${user.token}</b> </p>
                 <p>Este token expira en 10 minutos</p>
-            ` //html que le llegara al correo al usuario
+            `
         })
         console.log('Mensaje enviado', info.messageId)
     }
 
     static sendPasswordResetToken = async ( user : IEmail) => {
         const info = await transporter.sendMail({
-            from: 'UpTask <admin@uptask.com>',
+            from: 'UpTask <onboarding@resend.dev>', // <--- CAMBIADO AQUÍ
             to: user.email,
             subject: 'UpTask - Restablecer contraseña',
             text: 'UpTask - Restablecer contraseña',
@@ -32,7 +32,7 @@ export class AuthEmail {
                 <a href="${process.env.FRONTEND_URL}/auth/new-password">Restablecer Contraseña</a>
                 <p>E ingresa el codigo: <b>${user.token}</b> </p>
                 <p>Este token expira en 10 minutos</p>
-            ` //html que le llegara al correo al usuario
+            `
         })
         console.log('Mensaje enviado', info.messageId)
     }
